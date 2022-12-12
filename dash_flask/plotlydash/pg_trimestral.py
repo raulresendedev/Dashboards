@@ -57,11 +57,9 @@ def init_trimestral(server):
         Input('DPMES', component_property='value')
     )
     def layout(input_value):
-        print(input_value)
         if input_value is None:
             data = date.today()
             input_value = data.month
-            print(input_value)
 
         if len(str(input_value)) > 2:
             mesInicio = str(input_value[0]) + str(input_value[1])

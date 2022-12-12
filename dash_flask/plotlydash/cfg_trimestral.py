@@ -46,11 +46,12 @@ ara = [
 def conectar():
     SERVER_NAME = 'SOALV3SQLPROD,1438'
     DATABASE_NAME = 'dbEAcesso'
+
     return pyodbc.connect("""
             Driver={{SQL Server Native Client 11.0}};
             Server={0};
             Database={1};
-            """.format(SERVER_NAME, DATABASE_NAME))
+            Trusted_Connection=yes;""".format(SERVER_NAME, DATABASE_NAME))
 
 
 def q_chamados_mes(mesInicio, mesFim):
@@ -191,7 +192,6 @@ def g_sla_mes(df):
 def g_reabertos(df_r, df_c):
 
     mesesExt = pd.unique(df_c['MESEXTENSO'].tolist())
-    print(mesesExt)
     meses = pd.unique(df_c['MES'].tolist())
     qtdReabertos = []
     qtdRestante = []
