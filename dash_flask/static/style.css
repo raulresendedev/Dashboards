@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+a {
+  color: blue;
+  text-decoration: none; /* no underline */
+}
+
+body{
+    display:flex;
+    padding-top: 2.5vw;
+    background-color:#1c1d21;
+    background-image: url("./assets/imagemFundoHome.png");
+    background-size: cover;
+}
+.container{
+    margin: auto;
+    width: 95vw;
+    height: auto;
+    min-height: 90vh;
+	box-sizing: border-box;
+    padding: 20px;
+    box-shadow: 0 1px 20px 1px rgba(0, 0, 0, 0.5);
+    background-color: rgba(20, 20, 20, 0.664);
+}
+
+nav{
+    display: flex;
+    flex-direction: row;
+}
+
+#logo{
+    width: 12vw;
+}
+
+.titulo{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 70px;
+    font-size: 3vw;
+    font-family: 'Lato', sans-serif;
+    color: white;
+}
+
+.sc{
+    font-weight: bold;
+}
+
+.container-itens{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    flex-flow: row wrap;
+    row-gap: 2rem;
+    colunm-gap: auto;
+}
+.item{
+    color: white;
+    background-color: #1c1d21;
+    width:21%;
+    margin-right: auto;
+    margin-left: auto;
+    min-width: 200px;
+    font-size: 14px;
+    font-family: Roboto, Arial, sans-serif;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.3);
+}
+.item > img{
+    box-sizing: border-box;
+    border: 0;
+    vertical-align: middle;
+    margin: 0 auto 10px;
+    display: block;
+    min-height: 150px;
+    max-height: 200px;
+    align-content: center;
+    height: 80px;
+    padding: 10px;
+}
+
+.item > p{
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    line-height: 1.42857143;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 17px;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0 15px;
+    margin-top: 40px;
+    min-height: 1em;
+    font-family: 'lato';
+}
+
+.lastitem{
+    width: 100%;
+    height: 5px;
+    background-color: red;
+}
