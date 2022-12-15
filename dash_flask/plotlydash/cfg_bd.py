@@ -1,9 +1,12 @@
 import dash_flask.plotlydash.cfg_geral  as cfg
 import pandas as pd
 import pyodbc
+import warnings
+warnings.simplefilter("ignore")
 
 
 def conectar():
+
     SERVER_NAME = 'SOALV3SQLPROD,1438'
     DATABASE_NAME = 'dbEAcesso'
 

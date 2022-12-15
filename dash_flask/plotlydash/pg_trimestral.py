@@ -54,14 +54,18 @@ def init_trimestral(server):
         else:
             return dcc.Dropdown(lista_mes(), placeholder='PERIODO', id='drop_mes', style={'width': '100%'})
 
+
     @callback(
         Output('layout', component_property='children'),
-        Input('drop_mes', component_property='value')
+        [Input('drop_mes', component_property='value'),
+         Input('drop_ano', component_property='value')]
     )
-    def build_layout(drop_mes):
-        if drop_mes is None:
+    def build_layout(drop_mes, drop_ano):
+        if drop_mes is None or drop_ano is None:
             html = ""
             return html
+
+        cfg.ano = drop_ano
 
         if len(str(drop_mes)) > 2:
             cfg.mes_inicio = str(drop_mes[0]) + str(drop_mes[1])
