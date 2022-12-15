@@ -1,7 +1,7 @@
-from dash_flask.plotlydash import cfg_trimestral
+import dash_flask.plotlydash.cfg_geral  as cfg
+from dash_flask.plotlydash.cfg_geral import *
 
 from dash_flask.plotlydash.cfg_trimestral import *
-
 
 def init_trimestral(server):
     app = Dash(server=server, routes_pathname_prefix="/trimestral/", external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -11,22 +11,21 @@ def init_trimestral(server):
         dbc.Row([
             html.Div([
                 html.Img(src="../static/assets/logo-stefanini-preto.svg", style={'width': '150px', 'height': '50px'}),
-                html.Div([
+
                     html.Div(
-                        dcc.RadioItems(['Trimestral', 'Mensal'], id='radio', style={'width': '100px'}),
-                        style={'width': '200px'}
+                        dcc.RadioItems(['Trimestral', 'Mensal'], 'Mensal', id='radio', style={'width': '100px'}),
+                        style={'width': 'auto', 'margin-left': '10px'}
                     ),
 
                     html.Div(
-                        dcc.Dropdown(lista_ano(), placeholder='ANO', id='DPANO'),
-                        style={'width': '100%', 'margin-right': '5%'}
+                        dcc.Dropdown(lista_ano(), str(data.year), placeholder='ANO', id='drop_ano'),
+                        style={'min-width': '120px', 'margin-left': '10px'}
                     ),
 
                     html.Div(
-                        dcc.Dropdown(lista_mes(), placeholder='MES', id='DPMES'), id='COMBOMES',
-                        style={'width': '100%', 'margin-right': '5%'}
+                        dcc.Dropdown(lista_mes(), str(data.month), placeholder='PERIODO', id='drop_mes'), id='COMBOMES',
+                        style={'width': '120px', 'margin-left': '10px'}
                     )
-                ], style={'display': 'flex', 'align-items': 'center', 'margin-left': 'auto'})
             ], style={
                 'display': 'flex',
                 'background-color': '#99CCFF',
@@ -34,7 +33,10 @@ def init_trimestral(server):
                 'justify-content': 'flex-start',
                 'position': 'fixed',
                 'z-index': '1',
-                'height': '60px'
+                'padding-top': '10px',
+                'padding-bottom': '10px',
+                'height': 'auto',
+                'width': '100vw'
             })
 
         ], className="g-0"),
@@ -44,37 +46,32 @@ def init_trimestral(server):
 
     @callback(
         Output('COMBOMES', component_property='children'),
-        Input(component_id='radio', component_property='value')
+        Input(component_id='radio', component_property='value'), prevent_initial_call=True
     )
-    def build_graph(radio):
+    def change_dropdown(radio):
         if radio == 'Trimestral':
-            return dcc.Dropdown(lista_trimestral(), placeholder='MES', id='DPMES', style={'width': '100%'})
+            return dcc.Dropdown(lista_trimestral(), placeholder='PERIODO', id='drop_mes', style={'width': '100%'})
         else:
-            return dcc.Dropdown(lista_mes(), placeholder='MES', id='DPMES', style={'width': '100%'})
+            return dcc.Dropdown(lista_mes(), placeholder='PERIODO', id='drop_mes', style={'width': '100%'})
 
     @callback(
         Output('layout', component_property='children'),
-        Input('DPMES', component_property='value')
+        Input('drop_mes', component_property='value')
     )
-    def layout(input_value):
-        if input_value is None:
-            data = date.today()
-            input_value = data.month
+    def build_layout(drop_mes):
+        if drop_mes is None:
+            html = ""
+            return html
 
-        if len(str(input_value)) > 2:
-            mesInicio = str(input_value[0]) + str(input_value[1])
-            mesFim = str(input_value[-2]) + str(input_value[-1])
-            html = l_chamados(mesInicio, mesFim)
+        if len(str(drop_mes)) > 2:
+            cfg.mes_inicio = str(drop_mes[0]) + str(drop_mes[1])
+            cfg.mes_fim = str(drop_mes[-2]) + str(drop_mes[-1])
+            html = l_chamados()
             return html
         else:
-            html = l_chamados(input_value, input_value)
+            cfg.mes_inicio = drop_mes
+            cfg.mes_fim = drop_mes
+            html = l_chamados()
             return html
-
-    @callback(
-        Output('comboanalista', component_property='children'),
-        Input(component_id='radio', component_property='value')
-    )
-    def change_combo(radio):
-        return radio
 
     return app.server

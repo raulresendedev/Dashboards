@@ -167,29 +167,6 @@ def g_respostas(df):
     return figura
 
 
-def lista_mes():
-    data = date.today()
-    qtdmes = data.month
-    meses = []
-    for mes in range(qtdmes):
-        if data.year == 2022 and mes >= 3:
-            meses.append(str(mes + 1))
-
-    return meses
-
-
-def lista_ano():
-    data = date.today()
-    qtdano = data.year
-    anos = []
-
-    while qtdano >= 2022:
-        anos.append(qtdano)
-        qtdano -= 1
-
-    return anos
-
-
 def analista():
 
     df = q_chamados_mes()

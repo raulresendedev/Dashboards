@@ -8,7 +8,6 @@ load_dotenv(path.join(BASE_DIR, ".env"))
 
 
 class Config:
-    """Flask configuration variables."""
 
     # General Config
     FLASK_APP = "wsgi.py"

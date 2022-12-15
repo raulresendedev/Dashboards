@@ -1,7 +1,7 @@
-from dash_flask.plotlydash import cfg_analistas
-
 from dash_flask.plotlydash.cfg_analistas import *
+from dash_flask.plotlydash.cfg_geral import lista_ano, lista_mes
 
+data = date.today()
 
 def init_analistas(server):
     app = Dash(server=server, routes_pathname_prefix="/analistas/", external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -43,22 +43,22 @@ def init_analistas(server):
     ])
 
     @app.callback(
-        [Output('comboanalista', component_property='style'), Output('layout', component_property='children')],
+        [Output('comboanalista', component_property='style'),
+         Output('layout', component_property='children')],
         [Input(component_id='DPANO', component_property='value'),
          Input(component_id='DPMES', component_property='value'),
          Input(component_id='radio', component_property='value'),
          Input(component_id='combo', component_property='value')], prevent_initial_call=True
     )
     def change(DPANO, DPMES, radio, combo):
+        data = date.today()
 
         if DPANO == None:
-            data = date.today()
             cfg_analistas.ano = data.year
         else:
             cfg_analistas.ano = DPANO
 
         if DPMES == None:
-            data = date.today()
             cfg_analistas.mes = data.month
         else:
             cfg_analistas.mes = DPMES
@@ -72,7 +72,6 @@ def init_analistas(server):
                 return {'display': 'block', 'min-width': '170px', 'margin-left': '20px'}, html.Div()
             else:
                 cfg_analistas.analistas = combo
-                print(cfg_analistas.analistas)
                 page = l_analistas()
                 return {'display': 'block', 'min-width': '170px', 'margin-left': '20px'}, page
 
