@@ -220,31 +220,31 @@ def l_chamados():
 
     df_reabertos = q_reabertos()
 
-    g_sla_total1 = g_sla_total(df_chamados)
+    fig_sla_total = g_sla_total(df_chamados)
 
-    g_atribuidos1 = g_atribuidos(df_chamados)
+    fig_atribuidos = g_atribuidos(df_chamados)
 
-    g_categorizacao1 = g_categorizacao(df_chamados)
+    fig_ategorizacao = g_categorizacao(df_chamados)
 
-    g_sla_mes1 = g_sla_mes(df_chamados)
+    fig_sla_mes = g_sla_mes(df_chamados)
 
-    g_grupos1 = g_grupos(df_chamados)
+    fig_grupos = g_grupos(df_chamados)
 
-    g_grupo_atribuido1 = g_grupo_atribuido(df_chamados)
+    fig_grupo_atribuido = g_grupo_atribuido(df_chamados)
 
-    g_pesquisa_analista1 = g_pesquisa_analista(df_chamados)
+    fig_pesquisa_analista = g_pesquisa_analista(df_chamados)
 
-    g_pesquisa_servico1 = g_pesquisa_servico(df_chamados)
+    fig_pesquisa_servico = g_pesquisa_servico(df_chamados)
 
-    g_total_respostas1 = g_total_respostas(df_chamados)
+    fig_total_respostas = g_total_respostas(df_chamados)
 
-    g_reabertos1 = g_reabertos(df_reabertos, df_chamados)
+    fig_reabertos = g_reabertos(df_reabertos, df_chamados)
 
     return [
         dbc.Row([
             dbc.Col(
                 html.Div([
-                    dcc.Graph(id='example-graph-1', figure=g_sla_total1),
+                    dcc.Graph(id='example-graph-1', figure=fig_sla_total),
                     html.Hr(style={'margin': '0px'}),
                     html.H5(quantidade_sla(df_chamados), style=labelStyle)
                     ], style=estilo),
@@ -252,13 +252,13 @@ def l_chamados():
             ),
             dbc.Col(
                 html.Div(
-                    dcc.Graph(id='example-graph-2', figure=g_sla_mes1)
+                    dcc.Graph(id='example-graph-2', figure=fig_sla_mes)
                     , style=estilo),
                 width={"size": 4, "order": "last"},
             ),
             dbc.Col(
                 html.Div(
-                    dcc.Graph(id='example-graph-2', figure=g_reabertos1)
+                    dcc.Graph(id='example-graph-2', figure=fig_reabertos)
                     , style=estilo),
                 width={"size": 4, "order": "last"},
             )
@@ -267,7 +267,7 @@ def l_chamados():
         dbc.Row([
             dbc.Col(
                 html.Div([
-                    dcc.Graph(id='example-graph-3', figure=g_atribuidos1),
+                    dcc.Graph(id='example-graph-3', figure=fig_atribuidos),
                     html.Hr(style={'margin': '0px'}),
                     html.H5(quantidade_chamados(df_chamados), style=labelStyle)
                 ], style=estilo),
@@ -278,13 +278,13 @@ def l_chamados():
         dbc.Row([
             dbc.Col(
                 html.Div(
-                    dcc.Graph(id='example-graph-5', figure=g_grupos1)
+                    dcc.Graph(id='example-graph-5', figure=fig_grupos)
                     , style=estilo),
                 width={"size": 3, "order": 1}
             ),
             dbc.Col(
                 html.Div(
-                    dcc.Graph(id='example-graph-6', figure=g_grupo_atribuido1)
+                    dcc.Graph(id='example-graph-6', figure=fig_grupo_atribuido)
                     , style=estilo),
                 width={"size": 9, "order": 1}
             ),
@@ -293,7 +293,7 @@ def l_chamados():
         dbc.Row([
             dbc.Col(
                 html.Div(
-                    dcc.Graph(id='example-graph-4', figure=g_categorizacao1)
+                    dcc.Graph(id='example-graph-4', figure=fig_ategorizacao)
                     , style=estilo),
                 width={"size": 12, "order": 1},
             ),
@@ -302,7 +302,7 @@ def l_chamados():
         dbc.Row([
             dbc.Col(
                 html.Div([
-                    dcc.Graph(id='exampl', figure=g_total_respostas1),
+                    dcc.Graph(id='exampl', figure=fig_total_respostas),
                     html.Hr(style={'margin': '0px'}),
                     html.H5('RESPOSTAS: ' + str(len(df_chamados.dropna(how='any', axis=0))), style=labelStyle)
                 ], style=estilo),
@@ -311,7 +311,7 @@ def l_chamados():
 
             dbc.Col(
                 html.Div([
-                    dcc.Graph(id='example', figure=g_pesquisa_analista1),
+                    dcc.Graph(id='example', figure=fig_pesquisa_analista),
                     html.Hr(style={'margin': '0px'}),
                     html.H5('NPS: ' + nps_pesquisa(df_chamados, 'RANALISTA'), style=labelStyle)
                 ], style=estilo),
@@ -320,7 +320,7 @@ def l_chamados():
 
             dbc.Col(
                 html.Div([
-                    dcc.Graph(id='exampl', figure=g_pesquisa_servico1),
+                    dcc.Graph(id='exampl', figure=fig_pesquisa_servico),
                     html.Hr(style={'margin': '0px'}),
                     html.H5('NPS: ' + nps_pesquisa(df_chamados, 'RSERVICO'), style=labelStyle)
                 ], style=estilo),

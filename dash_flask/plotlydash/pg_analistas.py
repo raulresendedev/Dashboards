@@ -1,7 +1,8 @@
-from dash_flask.plotlydash.cfg_analistas import *
-from dash_flask.plotlydash.cfg_geral import lista_ano, lista_mes
+import dash_flask.plotlydash.cfg_geral  as cfg
+from dash_flask.plotlydash.cfg_geral import *
 
-data = date.today()
+import dash_flask.plotlydash.cfg_analistas  as cfg_analistas
+from dash_flask.plotlydash.cfg_analistas import *
 
 def init_analistas(server):
     app = Dash(server=server, routes_pathname_prefix="/analistas/", external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -13,18 +14,18 @@ def init_analistas(server):
                 html.Img(src="../static/assets/logo-stefanini-preto.svg", style={'width': '150px', 'height': '50px'}),
 
                 html.Div([
-                    dcc.Dropdown(lista_ano(), placeholder='ANO', id='DPANO')
-                ], style={'min-width': '70px', 'margin-left': '20px'}),
+                    dcc.Dropdown(lista_ano(), str(data.year), placeholder='ANO', id='DPANO')
+                ], style={'min-width': '120px', 'margin-left': '20px'}),
 
                 html.Div([
-                    dcc.Dropdown(lista_mes(), placeholder='MES', id='DPMES')
-                ], style={'min-width': '70px', 'margin-left': '20px'}),
+                    dcc.Dropdown(lista_mes(), str(data.month), placeholder='MES', id='DPMES')
+                ], style={'min-width': '120px', 'margin-left': '20px'}),
 
-                dcc.RadioItems(['Todos', 'Comparar'], id='radio', style={'width': '100px', 'margin-left': '20px'}),
+                dcc.RadioItems(['Todos', 'Comparar'], 'Todos', id='radio', style={'width': '100px', 'margin-left': '20px'}),
 
                 html.Div([
                     dcc.Dropdown(analista(), multi=True, placeholder='ANALISTAS', id="combo")
-                ], style={'min-width': '170px', 'margin-left': '20px'}, id="comboanalista")
+                ], style={'min-width': '170px', 'margin-left': '20px', 'display': 'none'}, id="comboanalista")
             ], style={
                 'display': 'flex',
                 'background-color': '#99CCFF',
@@ -48,20 +49,19 @@ def init_analistas(server):
         [Input(component_id='DPANO', component_property='value'),
          Input(component_id='DPMES', component_property='value'),
          Input(component_id='radio', component_property='value'),
-         Input(component_id='combo', component_property='value')], prevent_initial_call=True
+         Input(component_id='combo', component_property='value')]
     )
     def change(DPANO, DPMES, radio, combo):
-        data = date.today()
 
-        if DPANO == None:
-            cfg_analistas.ano = data.year
-        else:
-            cfg_analistas.ano = DPANO
+        if DPANO is None or DPMES is None:
+            if radio == 'Todos':
+                return {'display': 'none'}, html.Div()
+            else:
+                return {'display': 'block', 'min-width': '170px', 'margin-left': '20px'}, html.Div()
 
-        if DPMES == None:
-            cfg_analistas.mes = data.month
-        else:
-            cfg_analistas.mes = DPMES
+        cfg.ano = DPANO
+        cfg.mes_inicio = DPMES
+        cfg.mes_fim = DPMES
 
         if radio == 'Todos':
             cfg_analistas.analistas = analista()
