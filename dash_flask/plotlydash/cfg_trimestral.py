@@ -1,8 +1,5 @@
-from dash import Dash, dcc, html, Output, Input, callback
-import plotly.express as px
-import dash_bootstrap_components as dbc
-import pandas as pd
-from dash_flask.plotlydash.cfg_bd import q_reabertos, q_chamados_mes
+import dash_flask.plotlydash.cfg_geral as cfg
+from dash_flask.plotlydash.cfg_geral import *
 
 estilo = {
     'background': 'rgba(20, 20, 20, 1)',
@@ -40,9 +37,6 @@ ara = [
 ]
 
 
-
-
-
 def g_sla_total(df):
     figura = px.pie(df, names='STATUSSLA', title="SLA TOTAL", hole=.5, color_discrete_sequence=greenRed,
                     template='plotly_dark')
@@ -58,7 +52,6 @@ def porcentagem(valor, total):
 
 
 def g_sla_mes(df):
-
     mesesExt = pd.unique(df['MESEXTENSO'].tolist())
 
     noSla = []
@@ -78,11 +71,11 @@ def g_sla_mes(df):
     figura.update_layout(showlegend=False)
     figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
     figura.update_layout(xaxis_title=None, yaxis_title=None, uniformtext_minsize=8, uniformtext_mode='hide')
+
     return figura
 
 
 def g_reabertos(df_r, df_c):
-
     mesesExt = pd.unique(df_c['MESEXTENSO'].tolist())
     meses = pd.unique(df_c['MES'].tolist())
     qtdReabertos = []
@@ -94,8 +87,8 @@ def g_reabertos(df_r, df_c):
         qtdReabertos.append(porcentagem(r, c))
         qtdRestante.append(100 - qtdReabertos[i])
 
-
-    figura = px.bar(x=mesesExt, y=[qtdRestante, qtdReabertos], title="CHAMADOS REBERTOS", text_auto=True, color_discrete_sequence=greenRed)
+    figura = px.bar(x=mesesExt, y=[qtdRestante, qtdReabertos], title="CHAMADOS REBERTOS", text_auto=True,
+                    color_discrete_sequence=greenRed)
     figura.update_traces(width=.4)
     figura.update_yaxes(range=[90, 100])
     figura.update_layout(showlegend=False)
@@ -148,18 +141,28 @@ def g_grupo_atribuido(df):
 
 def g_pesquisa_analista(df):
     df2 = df.dropna(how='any', axis=0)
-    figura = px.pie(df2, names='RANALISTA', title="PESQUISA ANALISTA", hole=.5,
-                    color_discrete_sequence=greenBlueYellowOrangeRed)
-    figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
-    return figura
+
+    if len(df2['RANALISTA']) > 0:
+        figura = px.pie(df2, names='RANALISTA', title="PESQUISA ANALISTA", hole=.5,
+                        color_discrete_sequence=greenBlueYellowOrangeRed)
+        figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
+
+        return figura
+
+    else:
+        return g_sem_valores("PESQUISA ANALISTA")
 
 
 def g_pesquisa_servico(df):
     df2 = df.dropna(how='any', axis=0)
-    figura = px.pie(df2, names='RSERVICO', title="PESQUISA SERVICO", hole=.5,
-                    color_discrete_sequence=greenBlueYellowOrangeRed)
-    figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
-    return figura
+
+    if len(df2['RSERVICO']) > 0:
+        figura = px.pie(df2, names='RSERVICO', title="PESQUISA SERVICO", hole=.5,
+                        color_discrete_sequence=greenBlueYellowOrangeRed)
+        figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
+        return figura
+    else:
+        return g_sem_valores("PESQUISA SERVICO")
 
 
 def g_total_respostas(df):
@@ -247,7 +250,7 @@ def l_chamados():
                     dcc.Graph(id='example-graph-1', figure=fig_sla_total),
                     html.Hr(style={'margin': '0px'}),
                     html.H5(quantidade_sla(df_chamados), style=labelStyle)
-                    ], style=estilo),
+                ], style=estilo),
                 width={"size": 4, "order": 1}
             ),
             dbc.Col(

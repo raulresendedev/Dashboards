@@ -1,8 +1,6 @@
-from dash import Dash, dcc, html, Input, Output, callback
-import plotly.express as px
-import pandas as pd
+import dash_flask.plotlydash.cfg_geral as cfg
+from dash_flask.plotlydash.cfg_geral import *
 import dash_bootstrap_components as dbc
-from dash_flask.plotlydash.cfg_bd import q_reabertos, q_chamados_mes
 
 analistas = []
 
@@ -54,18 +52,23 @@ def g_sla(df):
 
 
 def g_respostas(df):
-    figura = px.histogram(df, y="ANALISTA", title="RESPOSTAS ANALISTA", color='RANALISTA',
-                          text_auto=True, color_discrete_sequence=greenBlueYellowOrangeRed, orientation='h', height=700)
-    figura.update_xaxes(tickangle=90)
-    figura.update_layout(yaxis={'categoryorder': 'total ascending'}, xaxis_title=None, yaxis_title=None,
-                         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
-    figura.update_traces(textfont_size=12, textangle=0, textposition="inside", cliponaxis=False)
+    try:
+        figura = px.histogram(df, y="ANALISTA", title="RESPOSTAS ANALISTA", color='RANALISTA',
+                              text_auto=True, color_discrete_sequence=greenBlueYellowOrangeRed, orientation='h',
+                              height=700)
+        figura.update_xaxes(tickangle=90)
+        figura.update_layout(yaxis={'categoryorder': 'total ascending'}, xaxis_title=None, yaxis_title=None,
+                             paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
+        figura.update_traces(textfont_size=12, textangle=0, textposition="inside", cliponaxis=False)
 
-    return figura
+        return figura
+
+    except:
+
+        return g_sem_valores("Sem respostas!")
 
 
 def analista():
-
     df = q_chamados_mes()
 
     analistas = pd.unique(df['ANALISTA'].tolist())
@@ -75,7 +78,6 @@ def analista():
 
 
 def l_analistas():
-
     df = q_chamados_mes()
     df = df[df['ANALISTA'].isin(analistas)]
     f_atribuidos = g_sla(df)
@@ -89,7 +91,7 @@ def l_analistas():
                     dcc.Graph(id='example-graph-1', figure=f_atribuidos)
                     , style=estilo
                 )
-             , width={"size": 12, "order": 1}
+                , width={"size": 12, "order": 1}
             )
         ], className="g-0"),
         dbc.Row([

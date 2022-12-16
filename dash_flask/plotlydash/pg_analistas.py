@@ -1,8 +1,6 @@
-import dash_flask.plotlydash.cfg_geral  as cfg
-from dash_flask.plotlydash.cfg_geral import *
-
-import dash_flask.plotlydash.cfg_analistas  as cfg_analistas
+import dash_flask.plotlydash.cfg_analistas as cfg_analistas
 from dash_flask.plotlydash.cfg_analistas import *
+
 
 def init_analistas(server):
     app = Dash(server=server, routes_pathname_prefix="/analistas/", external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -21,7 +19,8 @@ def init_analistas(server):
                     dcc.Dropdown(lista_mes(), str(data.month), placeholder='MES', id='DPMES')
                 ], style={'min-width': '120px', 'margin-left': '20px'}),
 
-                dcc.RadioItems(['Todos', 'Comparar'], 'Todos', id='radio', style={'width': '100px', 'margin-left': '20px'}),
+                dcc.RadioItems(['Todos', 'Comparar'], 'Todos', id='radio',
+                               style={'width': '100px', 'margin-left': '20px'}),
 
                 html.Div([
                     dcc.Dropdown(analista(), multi=True, placeholder='ANALISTAS', id="combo")
@@ -51,24 +50,24 @@ def init_analistas(server):
          Input(component_id='radio', component_property='value'),
          Input(component_id='combo', component_property='value')]
     )
-    def change(DPANO, DPMES, radio, combo):
+    def change(drop_ano, drop_mes, radio, combo):
 
-        if DPANO is None or DPMES is None:
+        if drop_ano is None or drop_mes is None:
             if radio == 'Todos':
                 return {'display': 'none'}, html.Div()
             else:
                 return {'display': 'block', 'min-width': '170px', 'margin-left': '20px'}, html.Div()
 
-        cfg.ano = DPANO
-        cfg.mes_inicio = DPMES
-        cfg.mes_fim = DPMES
+        cfg.ano = drop_ano
+        cfg.mes_inicio = drop_mes
+        cfg.mes_fim = drop_mes
 
         if radio == 'Todos':
             cfg_analistas.analistas = analista()
             page = l_analistas()
             return {'display': 'none'}, page
         else:
-            if combo == None:
+            if combo is None:
                 return {'display': 'block', 'min-width': '170px', 'margin-left': '20px'}, html.Div()
             else:
                 cfg_analistas.analistas = combo

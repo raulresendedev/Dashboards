@@ -1,6 +1,7 @@
-import dash_flask.plotlydash.cfg_geral  as cfg
+import dash_flask.plotlydash.cfg_geral as cfg
 from dash_flask.plotlydash.cfg_geral import *
 
+import dash_flask.plotlydash.cfg_trimestral as cfg_trimestral
 from dash_flask.plotlydash.cfg_trimestral import *
 
 def init_trimestral(server):
@@ -62,20 +63,20 @@ def init_trimestral(server):
     )
     def build_layout(drop_mes, drop_ano):
         if drop_mes is None or drop_ano is None:
-            html = ""
-            return html
+            page = ""
+            return page
 
         cfg.ano = drop_ano
 
         if len(str(drop_mes)) > 2:
             cfg.mes_inicio = str(drop_mes[0]) + str(drop_mes[1])
             cfg.mes_fim = str(drop_mes[-2]) + str(drop_mes[-1])
-            html = l_chamados()
-            return html
+            page = l_chamados()
+            return page
         else:
             cfg.mes_inicio = drop_mes
             cfg.mes_fim = drop_mes
-            html = l_chamados()
-            return html
+            page = l_chamados()
+            return page
 
     return app.server
