@@ -75,7 +75,7 @@ where
 	GRUPOATRIBUIDO in('SISTEMAS CORPORATIVOS','OPERACAO - N1')
 	and c.CATEGORIZACAO not like'%causa%'
     and YEAR(DTCRIACAO)={cfg.ano} and MONTH(DTCRIACAO)>={cfg.mes_inicio} and MONTH(DTCRIACAO)<={cfg.mes_fim}
-	and ATRIBUID NOT IN ('Thiago  De Campos Madeira', 'Izabel  Pereira De Jesus', 'Bruna  Ferreira De Paula', 'Ricardo  Januario Calabria', 'Niedja  Farias Neves Da Silva', 'Bruno  Santiago Primola De Souza')
+	and ATRIBUID NOT IN ('null  null', 'Thiago  De Campos Madeira', 'Izabel  Pereira De Jesus', 'Bruna  Ferreira De Paula', 'Ricardo  Januario Calabria', 'Niedja  Farias Neves Da Silva', 'Bruno  Santiago Primola De Souza')
 	and c.STATUS IN ('CLOSED', 'Resolved-Validation')
 	and STATUSSLA not in ('SLA Not Applied')         
 ORDER BY MES ASC, GRUPOATRIBUIDO ASC

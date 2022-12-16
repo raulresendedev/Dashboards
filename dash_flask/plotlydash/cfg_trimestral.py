@@ -243,13 +243,23 @@ def l_chamados():
 
     fig_reabertos = g_reabertos(df_reabertos, df_chamados)
 
+    v_qtd_sla = quantidade_sla(df_chamados)
+
+    v_qtd_chamados = quantidade_chamados(df_chamados)
+
+    v_nps_servico = nps_pesquisa(df_chamados, 'RSERVICO')
+
+    v_nps_analista = nps_pesquisa(df_chamados, 'RANALISTA')
+
+    v_qtd_respostas = str(len(df_chamados.dropna(how='any', axis=0)))
+
     return [
         dbc.Row([
             dbc.Col(
                 html.Div([
                     dcc.Graph(id='example-graph-1', figure=fig_sla_total),
                     html.Hr(style={'margin': '0px'}),
-                    html.H5(quantidade_sla(df_chamados), style=labelStyle)
+                    html.H5(v_qtd_sla, style=labelStyle)
                 ], style=estilo),
                 width={"size": 4, "order": 1}
             ),
@@ -272,7 +282,7 @@ def l_chamados():
                 html.Div([
                     dcc.Graph(id='example-graph-3', figure=fig_atribuidos),
                     html.Hr(style={'margin': '0px'}),
-                    html.H5(quantidade_chamados(df_chamados), style=labelStyle)
+                    html.H5(v_qtd_chamados, style=labelStyle)
                 ], style=estilo),
                 width={"size": 12, "order": 1}
             ),
@@ -307,7 +317,7 @@ def l_chamados():
                 html.Div([
                     dcc.Graph(id='exampl', figure=fig_total_respostas),
                     html.Hr(style={'margin': '0px'}),
-                    html.H5('RESPOSTAS: ' + str(len(df_chamados.dropna(how='any', axis=0))), style=labelStyle)
+                    html.H5('RESPOSTAS: ' + v_qtd_respostas, style=labelStyle)
                 ], style=estilo),
                 width={"size": 4, "order": 1},
             ),
@@ -316,7 +326,7 @@ def l_chamados():
                 html.Div([
                     dcc.Graph(id='example', figure=fig_pesquisa_analista),
                     html.Hr(style={'margin': '0px'}),
-                    html.H5('NPS: ' + nps_pesquisa(df_chamados, 'RANALISTA'), style=labelStyle)
+                    html.H5('NPS: ' + v_nps_analista, style=labelStyle)
                 ], style=estilo),
                 width={"size": 4, "order": 1},
             ),
@@ -325,7 +335,7 @@ def l_chamados():
                 html.Div([
                     dcc.Graph(id='exampl', figure=fig_pesquisa_servico),
                     html.Hr(style={'margin': '0px'}),
-                    html.H5('NPS: ' + nps_pesquisa(df_chamados, 'RSERVICO'), style=labelStyle)
+                    html.H5('NPS: ' + v_nps_servico, style=labelStyle)
                 ], style=estilo),
                 width={"size": 4, "order": 1},
             )

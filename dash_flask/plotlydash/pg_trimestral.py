@@ -72,11 +72,13 @@ def init_trimestral(server):
             cfg.mes_inicio = str(drop_mes[0]) + str(drop_mes[1])
             cfg.mes_fim = str(drop_mes[-2]) + str(drop_mes[-1])
             page = l_chamados()
+            verifica_consumo()
             return page
         else:
             cfg.mes_inicio = drop_mes
             cfg.mes_fim = drop_mes
             page = l_chamados()
+            verifica_consumo()
             return page
 
     return app.server

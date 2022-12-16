@@ -1,12 +1,14 @@
 from datetime import date
 import plotly.express as px
+import tracemalloc
 from dash_flask.plotlydash.cfg_bd import q_reabertos, q_chamados_mes
 from dash import Dash, dcc, html, Input, Output, callback
 import pandas as pd
 import dash_bootstrap_components as dbc
 
-data = date.today()
+tracemalloc.start()
 
+data = date.today()
 ano = data.year
 mes_inicio = data.month
 mes_fim = data.year
@@ -51,7 +53,6 @@ def lista_ano():
     while qtdano >= 2022:
         anos.append(qtdano)
         qtdano -= 1
-
     return anos
 
 
@@ -64,3 +65,10 @@ def g_sem_valores(title):
                          paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
 
     return figura
+
+
+def verifica_consumo():
+
+    current, peak = tracemalloc.get_traced_memory()
+    # tracemalloc.stop()
+    print(f"Current memory usage is {current / 10 ** 6}MB; Peak was {peak / 10 ** 6}MB")

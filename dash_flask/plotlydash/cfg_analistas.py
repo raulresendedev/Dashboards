@@ -69,6 +69,7 @@ def g_respostas(df):
 
 
 def analista():
+
     df = q_chamados_mes()
 
     analistas = pd.unique(df['ANALISTA'].tolist())
