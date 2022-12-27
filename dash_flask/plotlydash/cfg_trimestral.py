@@ -130,6 +130,8 @@ def g_categorizacao(df):
 
 def g_grupos(df):
 
+    # TESTE
+
     df = df[df.STATUSSLA != 'SEM SLA']
 
     figura = px.histogram(df, x='GRUPOATRIBUIDO', color='STATUSSLA', text_auto=True, title="SLA POR GRUPO",
