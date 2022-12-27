@@ -68,9 +68,17 @@ def g_sla_mes(df):
     figura.add_hline(y=90, line_width=1, fillcolor=red, opacity=1)
     figura.update_traces(width=.4)
     figura.update_yaxes(range=[60, 100])
-    figura.update_layout(showlegend=False)
-    figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
-    figura.update_layout(xaxis_title=None, yaxis_title=None, uniformtext_minsize=8, uniformtext_mode='hide')
+
+    figura.update_layout(
+                        showlegend=False,
+                        xaxis_title=None,
+                        yaxis_title=None,
+                        uniformtext_minsize=8,
+                        uniformtext_mode='hide',
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        template='plotly_dark'
+                    )
 
     return figura
 

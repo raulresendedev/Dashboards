@@ -113,3 +113,20 @@ def q_reabertos():
     conn.close()
 
     return df
+
+def q_aging():
+    conn = conectar()
+    sql_query = f"""
+        select id, ATRIBUID, MOTIVO, DATEDIFF(day, DTCRIACAO, GETDATE()) AS AGING, STATUSSLA, GRUPOATRIBUIDO
+        from dbEAcesso..tblchamados
+        where    STATUS not in('closed','Resolved-Validation') and
+        GRUPOATRIBUIDO in('OPERACAO - N1','SISTEMAS CORPORATIVOS') and 
+        ATRIBUID not in('Izabel  Pereira De Jesus','Bruno  Santiago Primola De Souza',
+                        'Marcelo  Goncalves Geraldo','Bruna  Ferreira De Paula','Niedja  Farias Neves Da Silva')
+		order by aging desc
+        """
+
+    df = pd.read_sql(sql_query, conn)
+    conn.close()
+
+    return df

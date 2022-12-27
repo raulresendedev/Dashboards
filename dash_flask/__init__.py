@@ -14,9 +14,11 @@ def init_app():
 
         from .plotlydash.pg_trimestral import init_trimestral
         from .plotlydash.pg_analistas import init_analistas
+        from .plotlydash.pg_aging import init_aging
 
         app = init_trimestral(app)
         app = init_analistas(app)
+        app = init_aging(app)
 
         compile_static_assets(assets)
 
