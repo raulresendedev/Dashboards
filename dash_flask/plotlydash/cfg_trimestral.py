@@ -38,7 +38,7 @@ ara = [
 
 
 def g_sla_total(df):
-    figura = px.pie(df, names='STATUSSLA', title="SLA TOTAL", hole=.5, color_discrete_sequence=greenRed,
+    figura = px.pie(df, names=['NO SLA', 'FORA SLA'], values=[len(df[df['STATUSSLA'] == 'NO SLA']), len(df[df['STATUSSLA'] == 'FORA SLA'])], title="SLA TOTAL", hole=.5, color_discrete_sequence=greenRed,
                     template='plotly_dark')
     figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
     return figura
@@ -129,6 +129,9 @@ def g_categorizacao(df):
 
 
 def g_grupos(df):
+
+    df = df[df.STATUSSLA != 'SEM SLA']
+
     figura = px.histogram(df, x='GRUPOATRIBUIDO', color='STATUSSLA', text_auto=True, title="SLA POR GRUPO",
                           color_discrete_sequence=greenRed)
     figura.update_layout(xaxis={'categoryorder': 'total descending'}, xaxis_title=None, yaxis_title=None,

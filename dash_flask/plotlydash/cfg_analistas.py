@@ -41,6 +41,9 @@ ara = [
 
 
 def g_sla(df):
+
+    df = df[df.STATUSSLA != 'SEM SLA']
+
     figura = px.histogram(df, y="ANALISTA", title="ATRIBUIDOS", color='STATUSSLA',
                           text_auto=True, color_discrete_sequence=greenRed, orientation='h', height=700)
     figura.update_xaxes(tickangle=90)

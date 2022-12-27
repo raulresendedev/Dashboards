@@ -29,6 +29,7 @@ select
 	,CASE
 		WHEN STATUSSLA = 'Within SLA' THEN 'NO SLA'
 		WHEN STATUSSLA = 'Breached SLA' THEN 'FORA SLA'
+		WHEN STATUSSLA = 'SLA Not Applied' THEN 'SEM SLA'
 	END AS STATUSSLA
 	,CASE
 		WHEN UPPER(SUBSTRING(c.CATEGORIZACAO, 1, CHARINDEX(' ', c.CATEGORIZACAO) - 1)) = 'NULL' THEN 'SEM CATEGORIA'
@@ -76,8 +77,7 @@ where
 	and c.CATEGORIZACAO not like'%causa%'
     and YEAR(DTCRIACAO)={cfg.ano} and MONTH(DTCRIACAO)>={cfg.mes_inicio} and MONTH(DTCRIACAO)<={cfg.mes_fim}
 	and ATRIBUID NOT IN ('null  null', 'Thiago  De Campos Madeira', 'Izabel  Pereira De Jesus', 'Bruna  Ferreira De Paula', 'Ricardo  Januario Calabria', 'Niedja  Farias Neves Da Silva', 'Bruno  Santiago Primola De Souza')
-	and c.STATUS IN ('CLOSED', 'Resolved-Validation')
-	and STATUSSLA not in ('SLA Not Applied')         
+	and c.STATUS IN ('CLOSED', 'Resolved-Validation')        
 ORDER BY MES ASC, GRUPOATRIBUIDO ASC
     """
     df = pd.read_sql(sql_query, conn)
