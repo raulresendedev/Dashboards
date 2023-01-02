@@ -14,8 +14,14 @@ mes_fim = data.year
 def lista_mes():
     qtdmes = data.month
     meses = []
+
+    if ano != data.year:
+        qtdmes = 12
+
     for mes in range(qtdmes):
-        if data.year == 2022 and mes >= 3:
+        if ano == 2022 and mes >= 3:
+            meses.append(str(mes + 1))
+        else:
             meses.append(str(mes + 1))
 
     return meses

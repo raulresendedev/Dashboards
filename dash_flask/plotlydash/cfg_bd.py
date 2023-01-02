@@ -117,7 +117,7 @@ def q_reabertos():
 def q_aging():
     conn = conectar()
     sql_query = f"""
-        select id, ATRIBUID, MOTIVO, DATEDIFF(day, DTCRIACAO, GETDATE()) AS AGING, STATUSSLA, GRUPOATRIBUIDO
+        select id AS TICKET, ATRIBUID ANALISTA, MOTIVO STATUS, DATEDIFF(day, DTCRIACAO, GETDATE()) AS AGING, STATUSSLA SLA, GRUPOATRIBUIDO GRUPO
         from dbEAcesso..tblchamados
         where    STATUS not in('closed','Resolved-Validation') and
         GRUPOATRIBUIDO in('OPERACAO - N1','SISTEMAS CORPORATIVOS') and 
