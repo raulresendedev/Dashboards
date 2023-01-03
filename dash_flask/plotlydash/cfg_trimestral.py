@@ -67,11 +67,9 @@ def g_sla_mes(df):
             noSla.append(porcentagem(qtdNoSla, qtdTotal))
             foraSla.append(porcentagem(qtdFora, qtdTotal))
 
-        figura = px.bar(x=mesesExt, y=[noSla, foraSla], text_auto=True, title='META SLA',
-                        color_discrete_sequence=greenRed)
+        figura = px.line(x=mesesExt, y=noSla, markers=True, title='META SLA', text=noSla)
+        figura.update_yaxes(range=[min(noSla) - 10, 100])
         figura.add_hline(y=90, line_width=1, fillcolor=red, opacity=1)
-        figura.update_traces(width=.4)
-        figura.update_yaxes(range=[60, 100])
 
         figura.update_layout(
             showlegend=False,
@@ -86,7 +84,7 @@ def g_sla_mes(df):
         return figura
 
     except:
-        return g_sem_valores("Sem respostas!")
+        return g_sem_valores("Sem valores!")
 
 
 def g_reabertos(df_r, df_c):
@@ -102,7 +100,7 @@ def g_reabertos(df_r, df_c):
             qtdReabertos.append(porcentagem(r, c))
             qtdRestante.append(100 - qtdReabertos[i])
 
-        figura = px.bar(x=mesesExt, y=[qtdRestante, qtdReabertos], title="CHAMADOS REBERTOS", text_auto=True,
+        figura = px.bar(x=mesesExt, y=[qtdRestante, qtdReabertos], title="CHAMADOS REABERTOS", text_auto=True,
                         color_discrete_sequence=greenRed)
         figura.update_traces(width=.4)
         figura.update_yaxes(range=[90, 100])
@@ -113,7 +111,7 @@ def g_reabertos(df_r, df_c):
         return figura
 
     except:
-        return g_sem_valores("Sem respostas!")
+        return g_sem_valores("Sem Reabertos!")
 
 
 def g_atribuidos(df):
@@ -234,7 +232,6 @@ def quantidade_chamados(df):
 
 
 def quantidade_sla(df):
-
     try:
         noSla = df['STATUSSLA'].value_counts()['NO SLA']
     except:
@@ -244,8 +241,19 @@ def quantidade_sla(df):
         foraSla = df['STATUSSLA'].value_counts()['FORA SLA']
     except:
         foraSla = 0
-
+    quatidade_categorizacao(df)
     return 'NO SLA: ' + str(noSla) + " | FORA DO SLA: " + str(foraSla)
+
+
+def quatidade_categorizacao(df):
+    var = df['CATEGORIZACAO'].value_counts()
+    i = var.index.tolist()
+    var = var.tolist()
+    texto = ""
+    for j in range(3):
+        texto = texto + str(i[j]) + ": " + str(var[j]) + " | "
+
+    return texto
 
 
 def l_chamados():
@@ -274,6 +282,8 @@ def l_chamados():
     fig_reabertos = g_reabertos(df_reabertos, df_chamados)
 
     v_qtd_sla = quantidade_sla(df_chamados)
+
+    v_qtd_categoria = quatidade_categorizacao(df_chamados)
 
     v_qtd_chamados = quantidade_chamados(df_chamados)
 
@@ -335,8 +345,11 @@ def l_chamados():
 
         dbc.Row([
             dbc.Col(
-                html.Div(
-                    dcc.Graph(id='example-graph-4', figure=fig_ategorizacao)
+                html.Div([
+                    dcc.Graph(id='example-graph-4', figure=fig_ategorizacao),
+                    html.Hr(style={'margin': '0px'}),
+                    html.H5(v_qtd_categoria, style=labelStyle)
+                    ]
                     , style=estilo),
                 width={"size": 12, "order": 1},
             ),

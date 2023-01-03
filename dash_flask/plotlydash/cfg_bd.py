@@ -117,7 +117,15 @@ def q_reabertos():
 def q_aging():
     conn = conectar()
     sql_query = f"""
-        select id AS TICKET, ATRIBUID ANALISTA, MOTIVO STATUS, DATEDIFF(day, DTCRIACAO, GETDATE()) AS AGING, STATUSSLA SLA, GRUPOATRIBUIDO GRUPO
+        select id AS TICKET,
+        CASE
+	        WHEN ATRIBUID = 'null  null' THEN 'Sem Atribuição'
+	        ELSE ATRIBUID
+        END AS ANALISTA, 
+        MOTIVO STATUS, 
+        DATEDIFF(day, DTCRIACAO, GETDATE()) AS AGING, 
+        STATUSSLA SLA, 
+        GRUPOATRIBUIDO GRUPO
         from dbEAcesso..tblchamados
         where    STATUS not in('closed','Resolved-Validation') and
         GRUPOATRIBUIDO in('OPERACAO - N1','SISTEMAS CORPORATIVOS') and 

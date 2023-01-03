@@ -44,6 +44,8 @@ def dt_table(df):
                                     {
                                         'if': {'row_index': 'odd'},
                                         'backgroundColor': 'rgb(40, 40, 40)',
-                                    }]
-
+                                    }],
+                                sort_action = 'custom',
+                                sort_mode = 'single',
+                                sort_by = []
                                 )
