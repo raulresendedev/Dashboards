@@ -234,8 +234,16 @@ def quantidade_chamados(df):
 
 
 def quantidade_sla(df):
-    noSla = df['STATUSSLA'].value_counts()['NO SLA']
-    foraSla = df['STATUSSLA'].value_counts()['FORA SLA']
+
+    try:
+        noSla = df['STATUSSLA'].value_counts()['NO SLA']
+    except:
+        noSla = 0
+
+    try:
+        foraSla = df['STATUSSLA'].value_counts()['FORA SLA']
+    except:
+        foraSla = 0
 
     return 'NO SLA: ' + str(noSla) + " | FORA DO SLA: " + str(foraSla)
 
@@ -265,10 +273,7 @@ def l_chamados():
 
     fig_reabertos = g_reabertos(df_reabertos, df_chamados)
 
-    try:
-        v_qtd_sla = quantidade_sla(df_chamados)
-    except:
-        v_qtd_sla = "0"
+    v_qtd_sla = quantidade_sla(df_chamados)
 
     v_qtd_chamados = quantidade_chamados(df_chamados)
 
