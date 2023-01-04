@@ -137,17 +137,41 @@ def g_categorizacao(df):
 
 
 def g_grupos(df):
-    # TESTE
+    try:
+        df = df[df.STATUSSLA != 'SEM SLA']
 
-    df = df[df.STATUSSLA != 'SEM SLA']
+        grupos = pd.unique(df['GRUPOATRIBUIDO'].tolist())
 
-    figura = px.histogram(df, x='GRUPOATRIBUIDO', color='STATUSSLA', text_auto=True, title="SLA POR GRUPO",
-                          color_discrete_sequence=greenRed)
-    figura.update_layout(xaxis={'categoryorder': 'total descending'}, xaxis_title=None, yaxis_title=None,
-                         uniformtext_minsize=8, uniformtext_mode='hide')
-    figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
-    return figura
+        noSla = []
+        foraSla = []
 
+        for grupo in grupos:
+            qtdNoSla = len(df[(df['STATUSSLA'] == 'NO SLA') & (df['GRUPOATRIBUIDO'] == grupo)])
+            qtdFora = len(df[(df['STATUSSLA'] == 'FORA SLA') & (df['GRUPOATRIBUIDO'] == grupo)])
+            qtdTotal = qtdNoSla + qtdFora
+            noSla.append(porcentagem(qtdNoSla, qtdTotal))
+            foraSla.append(porcentagem(qtdFora, qtdTotal))
+
+        figura = px.bar(x=grupos, y=[noSla, foraSla], text_auto=True, title='SLA POR GRUPO',
+                        color_discrete_sequence=greenRed)
+        figura.add_hline(y=90, line_width=1, fillcolor=red, opacity=1)
+        figura.update_traces(width=.5)
+        figura.update_yaxes(range=[60, 100])
+
+        figura.update_layout(
+            showlegend=False,
+            xaxis_title=None,
+            yaxis_title=None,
+            uniformtext_minsize=8,
+            uniformtext_mode='hide',
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            template='plotly_dark'
+        )
+        return figura
+
+    except:
+        return g_sem_valores("Sem respostas!")
 
 def g_grupo_atribuido(df):
     figura = px.histogram(df, x='ANALISTA', color='GRUPOATRIBUIDO', text_auto=True, barmode="group",

@@ -42,7 +42,7 @@ def init_trimestral(server):
             })
 
         ], className="g-0"),
-        html.Div(id='layout', style={'background-color': '#1c1d21', 'margin-top': '60px'}),
+        html.Div(id='layout', style={'background-color': '#1c1d21', 'margin-top': '70px'}),
     ])
 
     @callback(
