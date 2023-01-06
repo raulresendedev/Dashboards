@@ -1,3 +1,5 @@
+import numpy
+
 import dash_flask.plotlydash.cfg_geral as cfg
 from dash_flask.plotlydash.cfg_geral import *
 
@@ -87,30 +89,24 @@ def g_sla_mes(df):
         return g_sem_valores("Sem valores!")
 
 
-def g_reabertos(df_r, df_c):
+def g_reabertos(df_r):
     try:
-        mesesExt = pd.unique(df_c['MESEXTENSO'].tolist())
-        meses = pd.unique(df_c['MES'].tolist())
+        mesesExt = pd.unique(df_r['MESEXTENSO'].tolist())
         qtdReabertos = []
-        qtdRestante = []
+        for mes in mesesExt:
+            a = df_r["MESEXTENSO"].value_counts()[mes]
+            qtdReabertos.append(int(a))
 
-        for i, mes in enumerate(mesesExt):
-            c = df_c['MESEXTENSO'].value_counts()[mes]
-            r = df_r['MES'].value_counts()[meses[i]]
-            qtdReabertos.append(porcentagem(r, c))
-            qtdRestante.append(100 - qtdReabertos[i])
-
-        figura = px.bar(x=mesesExt, y=[qtdRestante, qtdReabertos], title="CHAMADOS REABERTOS", text_auto=True,
-                        color_discrete_sequence=greenRed)
+        figura = px.bar(x=mesesExt, y=qtdReabertos, title="CHAMADOS REABERTOS", text_auto=True, color_discrete_sequence=ara)
         figura.update_traces(width=.4)
-        figura.update_yaxes(range=[90, 100])
         figura.update_layout(showlegend=False)
         figura.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', template='plotly_dark')
         figura.update_layout(xaxis_title=None, yaxis_title=None)
 
         return figura
 
-    except:
+    except Exception as e:
+        print(e)
         return g_sem_valores("Sem Reabertos!")
 
 
@@ -268,7 +264,6 @@ def quantidade_sla(df):
     quatidade_categorizacao(df)
     return 'NO SLA: ' + str(noSla) + " | FORA DO SLA: " + str(foraSla)
 
-
 def quatidade_categorizacao(df):
     var = df['CATEGORIZACAO'].value_counts()
     i = var.index.tolist()
@@ -303,7 +298,7 @@ def l_chamados():
 
     fig_total_respostas = g_total_respostas(df_chamados)
 
-    fig_reabertos = g_reabertos(df_reabertos, df_chamados)
+    fig_reabertos = g_reabertos(df_reabertos)
 
     v_qtd_sla = quantidade_sla(df_chamados)
 

@@ -1,12 +1,12 @@
-import dash_flask.plotlydash.cfg_geral  as cfg
+import dash_flask.plotlydash.cfg_geral as cfg
 import pandas as pd
 import pyodbc
 import warnings
+
 warnings.simplefilter("ignore")
 
 
 def conectar():
-
     SERVER_NAME = 'SOALV3SQLPROD,1438'
     DATABASE_NAME = 'dbEAcesso'
 
@@ -107,12 +107,14 @@ def q_reabertos():
 		where ANALISTA NOT IN ('Thiago De Campos Madeira', 'Izabel Pereira De Jesus', 'Bruna Ferreira De Paula', 'Ricardo Januario Calabria', 'Niedja Farias Neves Da Silva')
         AND GRUPO NOT IN ('BACKOFFICE', 'FECHAMENTO')
         AND YEAR(DTABERTURA)=2022 and MONTH(DTABERTURA) >= {cfg.mes_inicio} and MONTH(DTABERTURA) <= {cfg.mes_fim}
+        order by MONTH(DTABERTURA)
     """
 
     df = pd.read_sql(sql_query, conn)
     conn.close()
 
     return df
+
 
 def q_aging():
     conn = conectar()
@@ -133,6 +135,18 @@ def q_aging():
                         'Marcelo  Goncalves Geraldo','Bruna  Ferreira De Paula','Niedja  Farias Neves Da Silva')
 		order by aging desc
         """
+
+    df = pd.read_sql(sql_query, conn)
+    conn.close()
+
+    return df
+
+
+def q_wordcloud():
+    conn = conectar()
+    sql_query = f"""
+            SELECT RESPOSTA FROM TBLCHAMADOSPESQUISA WHERE PERGUNTA = 'Deixe um comentário, crítica, sugestão ou elogio a respeito destes nossos atendimentos.' AND RESPOSTA NOT IN ('undefined', '', '.', '-', 'Sem') order by RESPOSTA
+            """
 
     df = pd.read_sql(sql_query, conn)
     conn.close()
